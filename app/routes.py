@@ -1,5 +1,5 @@
 from app import flask_engine
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, url_for
 from app.forms import LoginForm
 
 
@@ -9,18 +9,20 @@ def config_test():
 
     return render_template('config.html', x=x)
 
+
 @flask_engine.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         flash('Login requested for user {}, remember_me={}'.format(
-        form.username.data, form.remember_me.data))
-        return redirect('/index')
+            form.username.data, form.remember_me.data))
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
+
 
 @flask_engine.route('/')
 @flask_engine.route('/index')
-def abc():
+def index():
     user = {'username': 'Miguel'}
     posts = [
         {
