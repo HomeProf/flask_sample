@@ -2,7 +2,7 @@ from app import flask_engine, db
 from flask import render_template, flash, redirect, url_for, request
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Post
 from werkzeug.urls import url_parse
 
 
@@ -16,20 +16,7 @@ def config_test():
 @flask_engine.route('/index')
 @login_required
 def index():
-    posts = [
-            {
-                'author': {'username': 'John'},
-                'body': 'Some nice day here!'
-            },
-            {
-                'author': {'username': 'Max'},
-                'body': 'I want to also say something.'
-            },
-            {
-                'author': {'username': 'TomTom'},
-                'body': 'I am not a navigator!'
-            }
-        ]
+    posts = Post.query.all()
     return render_template('index.html', title='Home', posts=posts)
 
 
